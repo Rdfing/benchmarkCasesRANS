@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      binary;
+    class       volSymmTensorField;
+    arch        "LSB;label=32;scalar=64";
+    location    "0";
+    object      turbulenceProperties:R;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+
+internalField   uniform (2.5e-08 -0 -0 2.5e-08 -0 2.5e-08);
+
+boundaryField
+{
+    top
+    {
+        type            slip;
+    }
+    inlet
+    {
+        type            mapped;
+        field           R;
+        interpolationScheme cell;
+        value           uniform (2.5e-05 -0 -0 2.5e-05 -0 2.5e-05);
+    }
+    outlet
+    {
+        type            zeroGradient;
+    }
+    outerWall
+    {
+        type            calculated;
+        value           uniform (0.000773567 0 -0 0.000773567 -0 0.000773567);
+    }
+    bottomWall
+    {
+        type            calculated;
+        value           uniform (0.000773567 -0 -0 0.000773567 -0 0.000773567);
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

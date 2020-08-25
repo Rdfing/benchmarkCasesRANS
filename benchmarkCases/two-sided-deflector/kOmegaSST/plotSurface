@@ -1,0 +1,15 @@
+#!/bin/bash
+
+### Gnuplot script file for plotting data from file "probes.dat"
+gnuplot -persist > /dev/null 2>&1 << EOF
+	set terminal enhanced font '"Times New Roman, 10' linewidth 2
+	set terminal png size 925, 625
+	set output "TkE_Convergence.png"
+	set title "Convergence process"
+	set xlabel "Iterations"
+	set ylabel "Averaged TkE (m2/s2)"
+	set format y "%1.1e"
+	set grid
+	plot for [fn in system("ls postProcessing/surfaceMonitor_top/")] 'postProcessing/surfaceMonitor_top/'.fn.'/surfaceFieldValue.dat' title 'top'
+	
+EOF

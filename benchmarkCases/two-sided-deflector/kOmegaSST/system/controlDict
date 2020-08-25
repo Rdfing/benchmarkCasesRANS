@@ -1,0 +1,87 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     simpleFoam;
+
+startFrom       latestTime; //startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         160000;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval   8000;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+
+functions
+{
+		#includeFunc  yPlus(name=bottomWall);
+		#includeFunc  wallShearStress(name=bottomWall);
+
+		surfaceMonitor_top
+    	{
+        	type            surfaceFieldValue;
+        	libs            ("libfieldFunctionObjects.so");
+			enabled 			true;
+			executeControl      timeStep;
+        	executeInterval     1;
+	
+        	writeControl        timeStep; // wrtite based on times step
+			//writeControl        writeTime; // wirate based on output step
+			writeInterval       100;
+
+        	log             yes;
+        	writeFields     no;
+        	regionType      patch;
+        	name            top;
+
+
+			// Scale factor
+    		//scaleFactor     1;
+			operation       areaAverage;
+        	//operation       weightedAverage;
+			// Weight field - must be a scalar
+        	//weightField     phi;
+			//Sample field
+        	fields
+        	(
+            k
+        	);
+			// Write the total area of the faces
+			//writeArea       yes;
+    }
+}
+// ************************************************************************* //

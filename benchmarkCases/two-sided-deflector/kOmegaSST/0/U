@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0.1 0 0);
+
+boundaryField
+{
+    inlet
+/*
+    {
+        type            fixedValue;
+        value           uniform (1 0 0);//$internalField;
+        //type                flowRateInletVelocity;
+        //volumetricFlowRate  3.25;
+        //extrapolateProfile  yes;
+        //value               uniform (0 0 0);
+	}
+*/
+    {
+        type                mapped;
+        value               uniform (0.139 0 0);
+        interpolationScheme cell;
+        setAverage          true;
+        average             (0.139 0 0);
+    }
+
+
+	// use the parabolic profile 
+/*
+	{
+        type            fixedProfile;
+        profile         csvFile;
+        profileCoeffs
+        {
+            nHeaderLine         0;          // Number of header lines
+            refColumn           0;          // Reference column index
+            componentColumns    (1 2 3);    // Component column indices
+            separator           ",";        // Optional (defaults to ",")
+            mergeSeparators     no;         // Merge multiple separators
+            file                "0/Inlet_U.csv";  // name of csv data file
+            outOfBounds         clamp;      // Optional out-of-bounds handling
+            interpolationScheme linear;     // Optional interpolation scheme
+        }
+        direction        (0 1 0);
+        origin           0;
+    }
+*/
+    outlet
+    {
+		type            zeroGradient;
+        //type            pressureInletOutletVelocity;
+        //value           uniform (0 0 0);
+    }
+
+    bottomWall
+    {
+        type            noSlip; // look like this part belong to the fixedvalyuesFvPAtchVEctor field
+		//type zeroGradient;
+		
+    }
+	
+	outerWall
+    {
+        type            noSlip; // look like this part belong to the fixedvalyuesFvPAtchVEctor field
+		//type zeroGradient;
+		
+    }
+
+    top
+    {
+        type            slip;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+// ************************************************************************* //

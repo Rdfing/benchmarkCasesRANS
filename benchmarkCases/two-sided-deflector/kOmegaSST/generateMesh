@@ -1,0 +1,10 @@
+#!/bin/bash
+###refineMesh -overwrite
+blockMesh
+rm -r 0
+cp -r 0.org/ 0/
+###refineMesh -overwrite
+refineWallLayer -overwrite '(bottomWall)' 0.5
+refineWallLayer -overwrite '(outerWall)' 0.5
+refineWallLayer -overwrite '(bottomWall)' 0.5
+refineWallLayer -overwrite '(outerWall)' 0.5
